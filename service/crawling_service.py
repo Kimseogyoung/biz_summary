@@ -12,7 +12,7 @@ class CrawlingService:
         tag = soup.select_one("#dic_area")
         return tag.text.strip() if tag else ""
 
-    def get_naver_news_titles(self, url, cnt = 1, is_include_body = True):
+    def get_naver_news_titles(self, url, cnt = 1, is_include_body = True, keywords = []):
         headers = {"User-Agent": "Mozilla/5.0"}
 
         res = requests.get(url, headers=headers)
@@ -26,15 +26,20 @@ class CrawlingService:
             title = a.text.strip()
             link = a['href']
             body = ""
+
+            if keywords and not any(kw in title for kw in keywords):
+                print(f"키워드 불일치: {title}")
+                continue
+            
             if is_include_body:
                 body = self.get_news_body(link)
+
             result.append({
                 "제목": title,
                 "내용": body,
                 "링크": link,
             })
         return result
-
     # 암호화폐
     def get_crypto_price(self, url, crypto_name):
         res = requests.get(url).json()

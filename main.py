@@ -20,8 +20,9 @@ if __name__ == "__main__":
     for info in config_service.naver_news_infos:
         url = info["url"] + "?date=" + today_time
         category = info["category"]
-        result = crawling_service.get_naver_news_titles(url, 20, False)
+        result = crawling_service.get_naver_news_titles(url, 100, False, config_service.article_keywords)
         print(category, result)
+        
         
     crypto_price = crawling_service.get_crypto_price(config_service.crypto_api_url, config_service.crypto_name)
     print(crypto_price)

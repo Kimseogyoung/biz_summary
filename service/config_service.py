@@ -12,6 +12,7 @@ class ConfigService():
         self.crypto_name = self.config["crypto_name"]
         self.finance_selectors = self.config["finance_selectors"]
         self.naver_news_infos = self.config["naver_news_infos"]
+        self.article_keywords = self.config["article_keywords"]
 
     def get_config(self, key):
         return self.config[key]
