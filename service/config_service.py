@@ -15,6 +15,7 @@ class ConfigService():
         self.gold_selector = self.config["gold_selector"]
         self.news_url = self.config["news_url"]
         self.news_title_selectors = self.config["news_title_selectors"]
+        self.naver_news_infos = self.config["naver_news_infos"]
 
     def get_config(self, key):
         return self.config[key]
