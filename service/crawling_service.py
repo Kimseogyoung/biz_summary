@@ -43,12 +43,23 @@ class CrawlingService:
         return f"{crypto_name}: {price:,.0f}원 ({change_rate:+.2f}%)"
     
     # 환율 + 금 시세
-    def get_exchange(self, url, exchange_selectors):
-        res = requests.get(url)
-        soup = BeautifulSoup(res.text, "html.parser")
+    def get_finance_infos(self, finance_selectors):
         result = ""
-        for selector in exchange_selectors:
+        for selector in finance_selectors:
+            res = requests.get(selector["url"])
+            soup = BeautifulSoup(res.text, "html.parser") 
             select = soup.select_one(selector["selector"])
+            if "change_selector" in selector:
+                select_change = soup.select_one(selector["change_selector"])
+                change = f"{select_change.text.strip()} {selector['unit']}"
+                direction = soup.select_one(selector["direction_selector"]).text.strip()  # 보통 마지막 blind가 방향
+                if direction == "상승":
+                    change = f"+{change}"
+                elif direction == "하락":
+                    change = f"-{change}"
+                change = f"({change})"
+            else:
+                change = ""
             value = select.text.strip()
-            result += f"{selector['name']}: {value}원\n"
+            result += f"{selector['name']}: {value}{selector['unit']} {change}\n"
         return result

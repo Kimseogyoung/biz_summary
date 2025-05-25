@@ -10,10 +10,7 @@ class ConfigService():
         self.gpt_model = self.config["gpt_model"]
         self.crypto_api_url = self.config["crypto_api_url"]
         self.crypto_name = self.config["crypto_name"]
-        self.exchange_url = self.config["exchange_url"]
-        self.exchange_selectors = self.config["exchange_selectors"]
-        self.news_url = self.config["news_url"]
-        self.news_title_selectors = self.config["news_title_selectors"]
+        self.finance_selectors = self.config["finance_selectors"]
         self.naver_news_infos = self.config["naver_news_infos"]
 
     def get_config(self, key):
