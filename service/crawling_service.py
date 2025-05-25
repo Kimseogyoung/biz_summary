@@ -22,15 +22,20 @@ class CrawlingService:
         articles = soup.select(".sa_text_title")[:cnt]
 
         result = []
+        seen_titles = set()  # 이미 저장된 제목들을 기록
         for i, a in enumerate(articles, 1):
             title = a.text.strip()
             link = a['href']
             body = ""
 
             if keywords and not any(kw in title for kw in keywords):
-                print(f"키워드 불일치: {title}")
+                #print(f"키워드 불일치: {title}")
                 continue
-            
+
+            if title in seen_titles:
+                #print(f"중복 제목: {title}")
+                continue
+
             if is_include_body:
                 body = self.get_news_body(link)
 
@@ -39,7 +44,9 @@ class CrawlingService:
                 "내용": body,
                 "링크": link,
             })
+            seen_titles.add(title)
         return result
+
     # 암호화폐
     def get_crypto_price(self, url, crypto_name):
         res = requests.get(url).json()
